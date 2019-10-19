@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using ExtendControl.Models;
 using Xamarin.Forms;
 
 namespace ExtendControl.Views
@@ -15,74 +16,55 @@ namespace ExtendControl.Views
     /// </summary>
     public class DateListPicker : Picker
     {
-        /// <summary>
-        /// 選択可能未来日数
-        /// </summary>
-        public int FutureDays { get; set; }
-
-        /// <summary>
-        /// 選択可能過去日数
-        /// </summary>
-        public int PastDays
+        public DateRange DateRange
         {
             get
             {
-                return (int)this.GetValue(PastDaysProperty);
+                return (DateRange)GetValue(DateRangeProperty);
             }
 
             set
             {
-                this.SetValue(PastDaysProperty, value);
+                SetValue(DateRangeProperty, value);
             }
         }
 
-        /// <summary>
-        /// 選択可能過去日数のバインダブルプロパティ。
-        /// </summary>
-        public static readonly BindableProperty PastDaysProperty = BindableProperty.Create(
-            nameof(PastDays),
-            typeof(int),
+        public static readonly BindableProperty DateRangeProperty = BindableProperty.Create(
+            nameof(DateRange),
+            typeof(DateRange),
             typeof(DateListPicker),
-            defaultValue: (int)0,
-            defaultBindingMode: BindingMode.TwoWay,
-            propertyChanged: OnChangePastDays);
+            null,
+            BindingMode.TwoWay,
+            propertyChanged: OnChangeDateRange);
+
+        private static void OnChangeDateRange(BindableObject bindable, object oldValue, object newValue)
+        {
+            Debug.WriteLine("OnChangeDateRange");
+
+            DateRange range = newValue as DateRange;
+            if (range == null) return;
+
+            DateListPicker myself = bindable as DateListPicker;
+            if (myself == null) return;
+
+            myself.SetDateList(range);
+        }
 
         public DateListPicker()
         {
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bindable"></param>
-        /// <param name="oldValue"></param>
-        /// <param name="newValue"></param>
-        private static void OnChangePastDays(BindableObject bindable, object oldValue, object newValue)
+        private void SetDateList(DateRange range)
         {
-            Debug.WriteLine($"OnChangePastDays");
+            if (ItemsSource != null) ItemsSource.Clear();
 
-            DateListPicker myself = bindable as DateListPicker;
-            if (myself == null) return;
-
-            myself.PastDays = (int)newValue;
-
-            myself.SetDateList();
-        }
-
-        private void SetDateList()
-        {
-            if(ItemsSource != null) ItemsSource.Clear();
-
-            int past = 3;
-            int future = 1;
-            DateTime standard = DateTime.Now.Date;
             List<DateListPickerItem> list = new List<DateListPickerItem>();
-            for (int i = past * -1; i <= future; i++)
+            for (int i = (int)range.PastDays * -1; i <= range.FutureDays; i++)
             {
                 list.Add(
                     new DateListPickerItem
                     {
-                        Date = standard.AddDays(i),
+                        Date = range.StandardDate.AddDays(i),
                     });
             }
 

@@ -1,36 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-    xmlns:views="clr-namespace:ExtendControl.Views"
-    mc:Ignorable="d"
-    x:Class="ExtendControl.Views.MainPage"
-    Title="ExtendControl">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:views="clr-namespace:ExtendControl.Views"
+             mc:Ignorable="d"
+             x:Class="ExtendControl.Views.MainPage"
+             Title="ExtendControl">
     <StackLayout Spacing="10">
 
-        <Label Text="選択可能過去日付："/>
+        <Label Text="選択可能過去日付：" />
         <Entry Keyboard="Numeric"
-               x:Name="PastDays"/>
+               x:Name="PastDays" />
 
-        <Label Text="選択可能未来日付："/>
+        <Label Text="選択可能未来日付：" />
         <Entry Keyboard="Numeric"
-               x:Name="FutureDays"/>
+               x:Name="FutureDays" />
 
         <Button Text="適用"
-                Command="{Binding ApplyCommand}"/>
+                Command="{Binding ApplyCｍd}" />
 
         <!-- 拡張した日付選択ピッカー -->
-        <views:DateListPicker
-            ios:Picker.UpdateMode="WhenFinished"
-
-
-
-             
-            ItemDisplayBinding="{Binding DispText}"
-            PastDays="{Binding PastDays.Value}"/>
+        <views:DateListPicker ios:Picker.UpdateMode="WhenFinished"
+                              ItemDisplayBinding="{Binding DispText}"
+                              DateRange="{Binding DateRangeProp.Value}" />
 
     </StackLayout>
 </ContentPage>
