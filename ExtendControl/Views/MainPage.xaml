@@ -4,14 +4,25 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:ExtendControl.Views"
     mc:Ignorable="d"
     x:Class="ExtendControl.Views.MainPage"
     Title="ExtendControl">
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label
-            Text="Welcome to Xamarin.Forms!"
-            HorizontalOptions="Center"
-            VerticalOptions="CenterAndExpand" />
+    <StackLayout Spacing="10">
+
+        <Label Text="選択可能過去日付："/>
+        <Entry Keyboard="Numeric"
+               x:Name="PastDays"/>
+
+        <Label Text="選択可能未来日付："/>
+        <Entry Keyboard="Numeric"
+               x:Name="FutureDays"/>
+
+        <Button Text="適用"
+                Command="{Binding ApplyCommand}"/>
+
+        <!-- 拡張した日付選択ピッカー -->
+        <views:DateListPicker PastDays="{Binding PastDays.Value}"/>
+
     </StackLayout>
 </ContentPage>
