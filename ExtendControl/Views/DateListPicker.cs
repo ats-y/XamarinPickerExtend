@@ -32,7 +32,6 @@ namespace ExtendControl.Views
 
             set
             {
-                Debug.WriteLine($"PastDays setプロパティ({value})");
                 this.SetValue(PastDaysProperty, value);
             }
         }
@@ -77,13 +76,29 @@ namespace ExtendControl.Views
             int past = 3;
             int future = 1;
             DateTime standard = DateTime.Now.Date;
-            List<DateTime> list = new List<DateTime>();
+            List<DateListPickerItem> list = new List<DateListPickerItem>();
             for (int i = past * -1; i <= future; i++)
             {
-                list.Add(standard.AddDays(i));
+                list.Add(
+                    new DateListPickerItem
+                    {
+                        Date = standard.AddDays(i),
+                    });
             }
 
             ItemsSource = list;
+        }
+
+        public class DateListPickerItem
+        {
+            public string DispText
+            {
+                get
+                {
+                    return Date.ToString("yyyy/MM/dd");
+                }
+            }
+            public DateTime Date { get; set; }
         }
     }
 }
