@@ -8,7 +8,7 @@ namespace ExtendControl.Views
 {
     /// <summary>
     /// Pickerを拡張した指定した日付範囲を選択するピッカー。
-    /// 選択肢：
+    /// 選択肢例：
     ///   2019/10/17
     ///   2019/10/18
     ///   2019/10/19
@@ -16,6 +16,13 @@ namespace ExtendControl.Views
     /// </summary>
     public class DateListPicker : Picker
     {
+        public DateListPicker()
+        {
+        }
+
+        /// <summary>
+        /// 日付範囲プロパティ。
+        /// </summary>
         public DateRange DateRange
         {
             get
@@ -29,14 +36,28 @@ namespace ExtendControl.Views
             }
         }
 
+        /// <summary>
+        /// 日付範囲バインディングプロパティ。
+        /// ※バインディングするプロパティ名＋"Property"という名前にする必要がある。
+        /// </summary>
         public static readonly BindableProperty DateRangeProperty = BindableProperty.Create(
-            nameof(DateRange),
-            typeof(DateRange),
-            typeof(DateListPicker),
-            null,
-            BindingMode.TwoWay,
-            propertyChanged: OnChangeDateRange);
+            nameof(DateRange), // 紐づけるプロパティ名。
+            typeof(DateRange), // プロパティの型。
+            typeof(DateListPicker), // このプロパティを追加するコントロールの型。
+            null, // 初期値。
+            BindingMode.TwoWay, // バインディング方向。
+            propertyChanged: OnChangeDateRange // 値が変更された後に実行するデリゲート。
+            );
 
+        /// <summary>
+        /// 日付範囲バインディングプロパティが変更された後に実行する処理。
+        /// </summary>
+        /// <remarks>
+        /// BindableProperty.BindingPropertyChangingDelegateの実装。
+        /// </remarks>
+        /// <param name="bindable"></param>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
         private static void OnChangeDateRange(BindableObject bindable, object oldValue, object newValue)
         {
             Debug.WriteLine("OnChangeDateRange");
@@ -50,14 +71,16 @@ namespace ExtendControl.Views
             myself.SetDateList(range);
         }
 
-        public DateListPicker()
-        {
-        }
-
+        /// <summary>
+        /// 選択肢を設定する。
+        /// </summary>
+        /// <param name="range">選択肢の日付範囲</param>
         private void SetDateList(DateRange range)
         {
+            // スピナー選択肢をクリアする。
             if (ItemsSource != null) ItemsSource.Clear();
 
+            // 引数で指定された日付範囲どおりに選択肢を設定する。
             List<DateListPickerItem> list = new List<DateListPickerItem>();
             for (int i = (int)range.PastDays * -1; i <= range.FutureDays; i++)
             {
@@ -67,20 +90,7 @@ namespace ExtendControl.Views
                         Date = range.StandardDate.AddDays(i),
                     });
             }
-
             ItemsSource = list;
-        }
-
-        public class DateListPickerItem
-        {
-            public string DispText
-            {
-                get
-                {
-                    return Date.ToString("yyyy/MM/dd");
-                }
-            }
-            public DateTime Date { get; set; }
         }
     }
 }
