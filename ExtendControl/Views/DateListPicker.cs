@@ -27,11 +27,13 @@ namespace ExtendControl.Views
         {
             get
             {
+                Debug.WriteLine("DateRange getter");
                 return (DateRange)GetValue(DateRangeProperty);
             }
 
             set
             {
+                Debug.WriteLine("DateRange setter");
                 SetValue(DateRangeProperty, value);
             }
         }
@@ -87,7 +89,7 @@ namespace ExtendControl.Views
                 list.Add(
                     new DateListPickerItem
                     {
-                        Date = range.StandardDate.AddDays(i),
+                        Date = range.StandardDate.AddDays(i).Date,
                     });
             }
             ItemsSource = list;

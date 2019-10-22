@@ -21,10 +21,17 @@
         <Button Text="適用"
                 Command="{Binding ApplyCｍd}" />
 
+        <Button Text="今日"
+                Command="{Binding TodayCmd}"/>
+
         <!-- 拡張した日付選択ピッカー -->
         <views:DateListPicker ios:Picker.UpdateMode="WhenFinished"
                               ItemDisplayBinding="{Binding DispText}"
-                              DateRange="{Binding DateRangeProp.Value}" />
+                              DateRange="{Binding DateRangeProp.Value}"
+                              SelectedItem="{Binding SelectedDate.Value}"/>
+
+        <Button Text="選択日付の表示"
+                Command="{Binding ShowCmd}"/>
 
     </StackLayout>
 </ContentPage>
