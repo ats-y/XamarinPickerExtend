@@ -26,7 +26,6 @@
 
         <!-- 拡張した日付選択ピッカー -->
         <views:DateListPicker ios:Picker.UpdateMode="WhenFinished"
-                              ItemDisplayBinding="{Binding DispText}"
                               DateRange="{Binding DateRangeProp.Value}"
                               SelectedItem="{Binding SelectedDate.Value}"/>
 

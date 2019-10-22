@@ -7,19 +7,13 @@ namespace ExtendControl.Models
     public class DateListPickerItem
     {
         /// <summary>
-        /// 表示文字列
-        /// </summary>
-        public string DispText
-        {
-            get
-            {
-                return Date.ToString("yyyy/MM/dd");
-            }
-        }
-
-        /// <summary>
         /// 日付
         /// </summary>
         public DateTime Date { get; set; }
+
+        public override string ToString()
+        {
+            return Date.ToString("yyyy/MM/dd");
+        }
     }
 }
