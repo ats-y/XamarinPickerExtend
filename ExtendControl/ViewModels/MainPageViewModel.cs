@@ -31,8 +31,15 @@ namespace ExtendControl.ViewModels
         /// </summary>
         public ReactiveProperty<DateRange> DateRangeProp { get; set; } = new ReactiveProperty<DateRange>();
 
+        /// <summary>
+        /// 日付選択の選択項目プロパティ
+        /// </summary>
         public ReactiveProperty<DateListPickerItem> SelectedDate { get; set; } = new ReactiveProperty<DateListPickerItem>();
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="dialogService"></param>
         public MainPageViewModel(IPageDialogService dialogService)
         {
             _dialogService = dialogService;
@@ -63,7 +70,7 @@ namespace ExtendControl.ViewModels
             TodayCmd.Subscribe(_ =>
             {
                 Debug.WriteLine("今日ボタンタップ");
-
+                SelectedDate.Value = new DateListPickerItem { Date = DateTime.Now.Date };
             });
 
             // 選択日付表示ボタンコマンドの処理。
@@ -75,7 +82,7 @@ namespace ExtendControl.ViewModels
                     msg = "日付は選択されていません";
                 } else
                 {
-                    string dateText = SelectedDate.Value?.Date.ToString();
+                    string dateText = SelectedDate.Value?.Date.ToString("yyyy/MM/dd HH:mm:ss");
                     msg = $"選択日付変更！" + Environment.NewLine  + $"{dateText}";
                 }
 
