@@ -25,12 +25,15 @@
                 Command="{Binding TodayCmd}"/>
 
         <!-- 拡張した日付選択ピッカー -->
-        <views:DateListPicker ios:Picker.UpdateMode="WhenFinished"
+        <views:DateListPicker x:Name="MyDatePicker"
+                              ios:Picker.UpdateMode="WhenFinished"
                               DateRange="{Binding DateRangeProp.Value}"
                               SelectedItem="{Binding SelectedDate.Value}"/>
 
         <Button Text="選択日付の表示"
                 Command="{Binding ShowCmd}"/>
 
+        <Button Text="確認"
+                x:Name="ConfirmButton"/>
     </StackLayout>
 </ContentPage>
