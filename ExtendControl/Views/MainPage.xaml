@@ -1,39 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:views="clr-namespace:ExtendControl.Views"
-             mc:Ignorable="d"
-             x:Class="ExtendControl.Views.MainPage"
-             Title="ExtendControl">
-    <StackLayout Spacing="10">
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:views="clr-namespace:ExtendControl.Views"
+    mc:Ignorable="d"
+    x:Class="ExtendControl.Views.MainPage"
+    Title="ExtendControl">
+    <StackLayout
+        Spacing="10">
 
-        <Label Text="選択可能過去日付：" />
-        <Entry Keyboard="Numeric"
-               x:Name="PastDays" />
+        <Label
+            Text="選択可能過去日付：" />
+        <Entry
+            Keyboard="Numeric"
+            x:Name="PastDays" />
 
-        <Label Text="選択可能未来日付：" />
-        <Entry Keyboard="Numeric"
-               x:Name="FutureDays" />
+        <Label
+            Text="選択可能未来日付：" />
+        <Entry
+            Keyboard="Numeric"
+            x:Name="FutureDays" />
 
-        <Button Text="適用"
-                Command="{Binding ApplyCｍd}" />
+        <Button
+            Text="適用"
+            Command="{Binding ApplyCｍd}" />
 
-        <Button Text="今日"
-                Command="{Binding TodayCmd}"/>
+        <Button
+            Text="今日"
+            Command="{Binding TodayCmd}" />
+
+        <Button
+            Text="今日(強制)"
+            Clicked="OnTodayClicked"/>
 
         <!-- 拡張した日付選択ピッカー -->
-        <views:DateListPicker x:Name="MyDatePicker"
-                              ios:Picker.UpdateMode="WhenFinished"
-                              DateRange="{Binding DateRangeProp.Value}"
-                              SelectedItem="{Binding SelectedDate.Value}"/>
+        <views:DateListPicker
+            x:Name="MyDatePicker"
+            ios:Picker.UpdateMode="WhenFinished"
+            DateRange="{Binding DateRangeProp.Value}"
+            SelectedItem="{Binding SelectedDate.Value}" />
 
-        <Button Text="選択日付の表示"
-                Command="{Binding ShowCmd}"/>
+        <Button
+            Text="選択日付の表示"
+            Command="{Binding ShowCmd}" />
 
-        <Button Text="確認"
-                x:Name="ConfirmButton"/>
+        <views:UndoablePicker
+            x:Name="MyUndoablePicker"
+            ios:Picker.UpdateMode="WhenFinished">
+            <views:UndoablePicker.Items>
+                <x:String>1st</x:String>
+                <x:String>2nd</x:String>
+                <x:String>3rd</x:String>
+                <x:String>4th</x:String>
+                <x:String>5th</x:String>
+            </views:UndoablePicker.Items>
+        </views:UndoablePicker>
+
+        <Button
+            Text="リセット"
+            Clicked="OnResetClicked"/>
+
+        <Button
+            Text="確認"
+            x:Name="ConfirmButton" />
     </StackLayout>
 </ContentPage>

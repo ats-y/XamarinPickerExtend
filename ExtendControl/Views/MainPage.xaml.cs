@@ -29,6 +29,7 @@ namespace ExtendControl.Views
 
             // 日付ピッカーの変更を確認するタスクをセット。
             MyDatePicker.ConfirmingChageTask = CreateCofirmingTask;
+            MyUndoablePicker.ConfirmingChageTask = CreateCofirmingTask;
         }
 
         /// <summary>
@@ -43,6 +44,22 @@ namespace ExtendControl.Views
         public Task<bool> CreateCofirmingTask()
         {
             return DisplayAlert("確認", "変更していい？", "いいよ", "だめ");
+        }
+
+        /// <summary>
+        /// リセットボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        public void OnResetClicked(object sender, EventArgs args)
+        {
+            //MyUndoablePicker.SelectIndexForce(0);
+            MyUndoablePicker.SelectItemForce("1st");
+        }
+
+        public void OnTodayClicked(object sender, EventArgs args)
+        {
+            MyDatePicker.SelectItemForce(DateTime.Now);
         }
     }
 }
