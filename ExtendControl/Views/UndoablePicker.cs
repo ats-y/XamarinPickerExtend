@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using ExtendControl.Models.EventHandler;
 using Xamarin.Forms;
 
 namespace ExtendControl.Views
@@ -12,53 +13,76 @@ namespace ExtendControl.Views
     public class UndoablePicker : Picker
     {
         /// <summary>
-        /// 変更確認処理。
+        /// 選択項目変更前に実行するタスク。
         /// falseで変更を元に戻す。
         /// </summary>
-        public Func<Task<bool>> ConfirmingChageTask;
+        public Func<Task<bool>> BeforeChageTask;
+
+        /// <summary>
+        /// 選択確定イベント。
+        /// </summary>
+        public event EventHandler<FixedSelectionEventArgs> FixedSelectionEvent;
 
         /// <summary>
         /// 確定されたSelectIndex。
+        /// 選択肢を元に戻すために使用する。
         /// </summary>
-        public int _fixedSelectIndex;
+        private int _fixedSelectIndex;
+
+        /// <summary>
+        /// 選択取り消し中かどうか。
+        /// </summary>
+        private bool _isUndoing;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         public UndoablePicker()
         {
-            // TODO:警告でちゃう。
             this.SelectedIndexChanged += async (s, e) =>
             {
                 Debug.WriteLine("SelectedIndexChanged");
 
                 // 変更確認タスクがあればこれを実行。
-                if (ConfirmingChageTask != null)
+                if (BeforeChageTask != null)
                 {
-                    bool ret = await ConfirmingChageTask.Invoke();
+                    bool ret = await BeforeChageTask.Invoke();
                     if (!ret)
                     {
                         // 変更を否定されたら選択項目を元に戻す。
+                        _isUndoing = true;
                         SelectIndexForce(_fixedSelectIndex);
+                        _isUndoing = false;
                         return;
                     }
                 }
 
-                // 変更が確定したら選択項目のインデックスを保存しておく。
-                _fixedSelectIndex = SelectedIndex;
+                // 選択項目を確定する。
+                if (!_isUndoing)
+                {
+                    // 変更が確定したら選択項目のインデックスを保存しておく。
+                    _fixedSelectIndex = SelectedIndex;
+
+                    // 選択確定イベントを発生させる。
+                    FixedSelectionEventArgs args;
+                    args = new FixedSelectionEventArgs(_fixedSelectIndex, SelectedItem);
+                    FixedSelectionEvent?.Invoke(this, args);
+                }
+
+                Debug.WriteLine($"Selected. index=[{SelectedIndex}] item=[{SelectedItem}]");
             };
         }
 
         /// <summary>
         /// 変更確認処理を呼び出さずに選択項目を設定する。
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">選択する項目のインデックス</param>
         public void SelectIndexForce(int index)
         {
-            Func<Task<bool>> tmp = ConfirmingChageTask;
-            ConfirmingChageTask = null;
+            Func<Task<bool>> tmp = BeforeChageTask;
+            BeforeChageTask = null;
             SelectedIndex = index;
-            ConfirmingChageTask = tmp;
+            BeforeChageTask = tmp;
         }
 
         /// <summary>

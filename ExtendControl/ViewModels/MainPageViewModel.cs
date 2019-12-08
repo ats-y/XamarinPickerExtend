@@ -90,5 +90,10 @@ namespace ExtendControl.ViewModels
                 _dialogService.DisplayAlertAsync("日付", msg, "OK");
             });
         }
+
+        public void OnItemSelected(object selectItem)
+        {
+            _dialogService.DisplayAlertAsync("選択", "選択されました" + Environment.NewLine + selectItem.ToString(), "OK");
+        }
     }
 }

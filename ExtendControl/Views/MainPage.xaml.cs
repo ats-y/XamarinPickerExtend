@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ExtendControl.ViewModels;
 using Xamarin.Forms;
 
 namespace ExtendControl.Views
@@ -28,8 +30,23 @@ namespace ExtendControl.Views
             };
 
             // 日付ピッカーの変更を確認するタスクをセット。
-            MyDatePicker.ConfirmingChageTask = CreateCofirmingTask;
-            MyUndoablePicker.ConfirmingChageTask = CreateCofirmingTask;
+            MyDatePicker.BeforeChageTask = CreateCofirmingTask;
+            MyUndoablePicker.BeforeChageTask = CreateCofirmingTask;
+
+            // 選択確定イベント。
+            MyUndoablePicker.FixedSelectionEvent +=  (s, e) =>
+            {
+                Debug.WriteLine($"選択確定！index[{e.SelectIndex}] item=[{e.SelectItem.ToString()}]");
+
+                // 選択された項目をViewModelに通知する。
+                MainPageViewModel vm = BindingContext as MainPageViewModel;
+                if(vm != null)
+                {
+                    vm.OnItemSelected(e.SelectItem);
+                }
+            };
+
+            MyUndoablePicker.SelectIndexForce(1);
         }
 
         /// <summary>
