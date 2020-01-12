@@ -28,18 +28,32 @@
                     <Label
                         Text="日付範囲選択ピッカー。&#xA;選択可能日付範囲および初期選択日はConfigプロパティで指定する。Configプロパティによる選択肢変更では変更確認イベントは発生しない。"
                         Margin="0,0,0,10"
-                        FontSize="Micro"/>
+                        FontSize="Micro" />
 
                     <!-- Configプロパティエリア -->
                     <Frame
                         Padding="10"
                         HasShadow="False"
                         BorderColor="LightGray">
-                        <StackLayout>
+                        <StackLayout
+                            HorizontalOptions="FillAndExpand">
 
-                            <Label
-                                Text="Configプロパティ"
-                                FontAttributes="Bold" />
+                            <!-- タイトル ＆ 適用ボタン -->
+                            <StackLayout
+                                Orientation="Horizontal"
+                                HorizontalOptions="FillAndExpand">
+                                <Label
+                                    Text="Configプロパティ"
+                                    FontAttributes="Bold"
+                                    VerticalOptions="Center" />
+
+                                <Button
+                                    Text="適用"
+                                    Command="{Binding ApplyCｍd}"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="EndAndExpand" />
+
+                            </StackLayout>
 
                             <!-- 選択可能過去日付 -->
                             <StackLayout
@@ -70,22 +84,32 @@
                                     Increment="1" />
                             </StackLayout>
 
-                            <!-- 初期選択日付 -->
-                            <StackLayout
-                                Orientation="Horizontal">
+                            <Grid>
+
+                                <!-- 範囲基準日 -->
                                 <Label
-                                    Text="初期値"
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    Text="選択範囲基準日"
                                     VerticalOptions="Center" />
                                 <DatePicker
+                                    Grid.Column="1"
+                                    Grid.Row="0"
                                     Format="yyyy/MM/dd"
-                                    Date="{Binding InitialDate.Value}"
-                                    ios:Picker.UpdateMode="WhenFinished" />
-                            </StackLayout>
+                                    Date="{Binding StandardDate.Value}" />
 
-                            <!-- 適用ボタン -->
-                            <Button
-                                Text="適用"
-                                Command="{Binding ApplyCｍd}" />
+                                <!-- 初期選択日 -->
+                                <Label
+                                    Grid.Column="0"
+                                    Grid.Row="1"
+                                    Text="初期選択日"
+                                    VerticalOptions="Center" />
+                                <DatePicker
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    Format="yyyy/MM/dd"
+                                    Date="{Binding InitialDate.Value}"/>
+                            </Grid>
                         </StackLayout>
                     </Frame>
 

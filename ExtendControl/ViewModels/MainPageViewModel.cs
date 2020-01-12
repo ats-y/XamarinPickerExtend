@@ -42,6 +42,7 @@ namespace ExtendControl.ViewModels
         public ReactiveProperty<RDatePickerConfig> RDatePickerDateAtt { get; } = new ReactiveProperty<RDatePickerConfig>();
         public ReactiveProperty<DateTime> RDatePickerDateSelectedItem { get; } = new ReactiveProperty<DateTime>();
 
+        public ReactiveProperty<DateTime> StandardDate { get; } = new ReactiveProperty<DateTime>();
         public ReactiveProperty<DateTime> InitialDate { get; } = new ReactiveProperty<DateTime>();
 
         /// <summary>
@@ -53,6 +54,10 @@ namespace ExtendControl.ViewModels
             TraceUtility.Trace();
 
             _dialogService = dialogService;
+
+            DateTime now = DateTime.Now;
+            StandardDate.Value = now;
+            InitialDate.Value = now;
 
             // 日付範囲を更新する。
             DateRangeProp.Value = new DateRange
@@ -110,7 +115,8 @@ namespace ExtendControl.ViewModels
             };
 
             // RDatePickerの候補、選択肢を更新する。
-            RDatePickerDateAtt.Value = new RDatePickerConfig(std, past, future, InitialDate.Value);
+            RDatePickerDateAtt.Value = new RDatePickerConfig(
+                StandardDate.Value, past, future, InitialDate.Value);
         }
 
         
@@ -127,8 +133,6 @@ namespace ExtendControl.ViewModels
         public void OnNavigatedTo(INavigationParameters parameters)
         {
             TraceUtility.Trace();
-
-            InitialDate.Value = DateTime.Now;
         }
 
         public void Destroy()

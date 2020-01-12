@@ -22,7 +22,7 @@ namespace ExtendControl.Models
         public DateTime InitialSelectDate { get; }
 
         /// <summary>
-        /// コンストラクタ。
+        /// コンストラクタ。<br/>
         /// 選択可能範囲はシステム日のみ。初期選択日もシステム日。
         /// </summary>
         public RDatePickerConfig()
@@ -34,8 +34,8 @@ namespace ExtendControl.Models
         }
 
         /// <summary>
-        /// コンストラクタ。
-        /// 基準日と選択可能過去・未来日数から選択可能範囲を決定する。<br/>
+        /// コンストラクタ。<br/>
+        /// 基準日と選択可能過去・未来日数から選択可能範囲を決定する。
         /// 初期選択日は基準日。
         /// </summary>
         /// <param name="standard">基準日</param>
@@ -49,7 +49,7 @@ namespace ExtendControl.Models
         }
 
         /// <summary>
-        /// コンストラクタ
+        /// コンストラクタ。<br/>
         /// 基準日と選択可能過去未来日数から選択可能範囲を決定する。
         /// 初期選択日は指定された日付。<br/>
         /// 指定された初期選択日が選択範囲外であれば初期選択日を選択できるよう選択可能範囲を拡張する。<br/>
