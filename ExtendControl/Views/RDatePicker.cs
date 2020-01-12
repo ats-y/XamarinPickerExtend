@@ -1,41 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using ExtendControl.Models;
 using Xamarin.Forms;
 
 namespace ExtendControl.Views
 {
     /// <summary>
-    /// 日付範囲選択ピッカー
+    /// 日付範囲選択ピッカー<br/>
+    /// 選択可能は日付範囲および初期選択日はConfigプロパティで指定する（この場合、変更確認イベントは発声しない）
     /// </summary>
     public class RDatePicker : UndoablePicker
     {
         /// <summary>
-        /// 日付範囲・初期選択日付設定プロパティ。
+        /// 日付範囲・初期選択日付設定。
         /// </summary>
-        public SelectableDateRange DateAttribute
+        public RDatePickerConfig Config
         {
             get
             {
-                return (SelectableDateRange)GetValue(DateAttributeProperty);
+                return (RDatePickerConfig)GetValue(ConfigProperty);
             }
 
             set
             {
-                SetValue(DateAttributeProperty, value);
+                SetValue(ConfigProperty, value);
             }
         }
 
         /// <summary>
         /// 日付範囲・初期選択日付設定プロパティのバインディングプロパティ。
+        /// このプロパティで選択日付が変更されても変更確認イベントは起こさない。
         /// </summary>
-        public static readonly BindableProperty DateAttributeProperty = BindableProperty.Create(
-            nameof(DateAttribute), // 紐づけるプロパティ名。
-            typeof(SelectableDateRange), // プロパティの型。
+        public static readonly BindableProperty ConfigProperty = BindableProperty.Create(
+            nameof(Config), // 紐づけるプロパティ名。
+            typeof(RDatePickerConfig), // プロパティの型。
             typeof(RDatePicker), // このプロパティを追加するコントロールの型。
             null, // 初期値。
             BindingMode.TwoWay, // バインディング方向。
-            propertyChanged: OnChangeDateRange // 値が変更された後に実行するデリゲート。
+            propertyChanged: OnChangeConfig // 値が変更された後に実行するデリゲート。
         );
 
         /// <summary>
@@ -44,10 +47,10 @@ namespace ExtendControl.Views
         /// <param name="bindable"></param>
         /// <param name="oldValue"></param>
         /// <param name="newValue"></param>
-        private static void OnChangeDateRange(BindableObject bindable, object oldValue, object newValue)
+        private static void OnChangeConfig(BindableObject bindable, object oldValue, object newValue)
         {
             // 引数チェック。
-            SelectableDateRange value = newValue as SelectableDateRange;
+            RDatePickerConfig value = newValue as RDatePickerConfig;
             if (value == null) return;
             RDatePicker myself = bindable as RDatePicker;
             if (myself == null) return;
@@ -75,7 +78,7 @@ namespace ExtendControl.Views
         /// 選択肢を設定する。
         /// </summary>
         /// <param name="range">選択肢の日付範囲</param>
-        private void SetDateList(SelectableDateRange range)
+        private void SetDateList(RDatePickerConfig range)
         {
             TraceUtility.Trace();
 
@@ -93,10 +96,10 @@ namespace ExtendControl.Views
             }
             ItemsSource = list;
 
-            // 選択肢の決定
-            if (range.Select != DateTime.MinValue)
+            // 選択肢の決定。
+            if (range.InitialSelectDate != DateTime.MinValue)
             {
-                SelectedItem = range.Select.Date;
+                SelectedItem = range.InitialSelectDate.Date;
             }
             else
             {

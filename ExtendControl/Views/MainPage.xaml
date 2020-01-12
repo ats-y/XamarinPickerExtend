@@ -9,121 +9,156 @@
     mc:Ignorable="d"
     x:Class="ExtendControl.Views.MainPage"
     Title="ExtendControl">
-    <StackLayout
-        Spacing="10">
-
-        <!-- 選択可能過去日付 -->
+    <ScrollView>
         <StackLayout
-            Orientation="Horizontal">
+            Margin="10">
 
-            <Label
-                Text="{Binding Source={x:Reference StepperPast}
+            <!-- 選択可能過去日付 -->
+            <StackLayout
+                Orientation="Horizontal">
+
+                <Label
+                    Text="{Binding Source={x:Reference StepperPast}
                         , Path=Value
                         , StringFormat='選択可能過去日数：{0}'}"
-                VerticalOptions="Center" />
-            <Stepper
-                x:Name="StepperPast"
-                Value="{Binding PastDays.Value}"
-                Increment="1" />
-        </StackLayout>
+                    VerticalOptions="Center" />
+                <Stepper
+                    x:Name="StepperPast"
+                    Value="{Binding PastDays.Value}"
+                    Increment="1" />
+            </StackLayout>
 
-        <!-- 選択可能過去日付 -->
-        <StackLayout
-            Orientation="Horizontal">
+            <!-- 選択可能過去日付 -->
+            <StackLayout
+                Orientation="Horizontal">
 
-            <Label
-                Text="{Binding Source={x:Reference StepperFuture}
+                <Label
+                    Text="{Binding Source={x:Reference StepperFuture}
                         , Path=Value
                         , StringFormat='選択可能未来日数：{0}'}"
-                VerticalOptions="Center" />
-            <Stepper
-                x:Name="StepperFuture"
-                Value="{Binding FutureDays.Value}"
-                Increment="1" />
-        </StackLayout>
+                    VerticalOptions="Center" />
+                <Stepper
+                    x:Name="StepperFuture"
+                    Value="{Binding FutureDays.Value}"
+                    Increment="1" />
+            </StackLayout>
 
-        <!-- 初期選択日付 -->
-        <StackLayout
-            Orientation="Horizontal">
+            <!-- 初期選択日付 -->
+            <StackLayout
+                Orientation="Horizontal">
 
-            <Label
-                Text="初期値"
-                VerticalOptions="Center"/>
-            <DatePicker
-                Format="yyyy/MM/dd"
-                Date="{Binding InitialDate.Value}"
-                ios:Picker.UpdateMode="WhenFinished"/>
-
-        </StackLayout>
-
-        <!-- ボタン -->
-        <Button
-            Text="適用"
-            Command="{Binding ApplyCｍd}" />
-
-        <Button
-            Text="今日"
-            Command="{Binding TodayCmd}" />
-
-        <Button
-            Text="今日(強制)"
-            Clicked="OnTodayClicked" />
-
-        <!-- 拡張した日付選択ピッカー -->
-        <views:DateListPicker
-            x:Name="MyDatePicker"
-            ios:Picker.UpdateMode="WhenFinished"
-            DateRange="{Binding DateRangeProp.Value}"
-            SelectedItem="{Binding SelectedDate.Value}" />
-
-        <!-- RDatePicker -->
-        <Frame
-            HasShadow="False"
-            BorderColor="Gray"
-            Margin="5">
-            <StackLayout>
-
-                <views:RDatePicker
-                    x:Name="MyRDatePicker"
-                    ios:Picker.UpdateMode="WhenFinished"
-                    DateAttribute="{Binding RDatePickerDateAtt.Value}"
-                    SelectedItem="{Binding RDatePickerDateSelectedItem.Value}"
-                    ItemDisplayBinding="{Binding ., StringFormat='{0:M/d}'}" />
                 <Label
-                    Text="{Binding Source={x:Reference MyRDatePicker}
+                    Text="初期値"
+                    VerticalOptions="Center" />
+                <DatePicker
+                    Format="yyyy/MM/dd"
+                    Date="{Binding InitialDate.Value}"
+                    ios:Picker.UpdateMode="WhenFinished" />
+
+            </StackLayout>
+
+            <!-- ボタン -->
+            <Button
+                Text="適用"
+                Command="{Binding ApplyCｍd}" />
+
+            <!-- 拡張した日付選択ピッカー -->
+            <Frame
+                HasShadow="False"
+                BorderColor="Gray">
+                <StackLayout>
+
+                    <Label
+                        Text="DateListPicker"
+                        FontSize="Large"
+                        FontAttributes="Bold" />
+
+                    <views:DateListPicker
+                        x:Name="MyDatePicker"
+                        ios:Picker.UpdateMode="WhenFinished"
+                        DateRange="{Binding DateRangeProp.Value}"
+                        SelectedItem="{Binding SelectedDate.Value}" />
+
+                    <Button
+                        Text="今日"
+                        Command="{Binding TodayCmd}" />
+
+                    <Button
+                        Text="今日(強制)"
+                        Clicked="OnTodayClicked" />
+
+                    <Button
+                        Text="選択日付の表示"
+                        Command="{Binding ShowCmd}" />
+
+                </StackLayout>
+            </Frame>
+
+            <!-- RDatePicker -->
+            <Frame
+                HasShadow="False"
+                BorderColor="Gray">
+                <StackLayout>
+
+                    <Label
+                        Text="RDatePicker"
+                        FontSize="Large"
+                        FontAttributes="Bold" />
+
+                    <views:RDatePicker
+                        x:Name="MyRDatePicker"
+                        ios:Picker.UpdateMode="WhenFinished"
+                        Config="{Binding RDatePickerDateAtt.Value}"
+                        SelectedItem="{Binding RDatePickerDateSelectedItem.Value}"
+                        ItemDisplayBinding="{Binding ., StringFormat='{0:M/d}'}" />
+                    <Label
+                        Text="{Binding Source={x:Reference MyRDatePicker}
                     , Path=SelectedItem
                     , StringFormat='SelectedItem={0:yyyy/M/d H:mm:ss}'
                     , FallbackValue='error!'}" />
-                <Label
-                    Text="{Binding Source={x:Reference MyRDatePicker}
+                    <Label
+                        Text="{Binding Source={x:Reference MyRDatePicker}
                     , Path=SelectedIndex
                     , StringFormat='SelectedIndex={0}'
                     , FallbackValue='error!'}" />
-            </StackLayout>
-        </Frame>
 
-        <Button
-            Text="選択日付の表示"
-            Command="{Binding ShowCmd}" />
+                    <StackLayout
+                        Orientation="Horizontal"
+                        Margin="0,10,0,0">
+                        <Label
+                            VerticalTextAlignment="Center"
+                            Text="外部からの選択肢設定" />
+                        <DatePicker
+                            Format="yyyy/M/d"
+                            ios:Picker.UpdateMode="WhenFinished"
+                            Date="{Binding RDatePickerDateSelectedItem.Value}" />
+                    </StackLayout>
+                    <Label
+                        FontSize="Micro"
+                        Text="PickerのSelectedItemは選択肢にない項目も設定できてしまう。
+                    選択肢にないSelectedItemを指定した場合、SelectedIndexは-1になる。" />
+                </StackLayout>
+            </Frame>
 
-        <views:UndoablePicker
-            x:Name="MyUndoablePicker"
-            ios:Picker.UpdateMode="WhenFinished">
-            <views:UndoablePicker.Items>
-                <x:String>1st</x:String>
-                <x:String>2nd</x:String>
-                <x:String>3rd</x:String>
-                <x:String>4th</x:String>
-                <x:String>5th</x:String>
-            </views:UndoablePicker.Items>
-        </views:UndoablePicker>
+            <views:UndoablePicker
+                x:Name="MyUndoablePicker"
+                ios:Picker.UpdateMode="WhenFinished">
+                <views:UndoablePicker.Items>
+                    <x:String>1st</x:String>
+                    <x:String>2nd</x:String>
+                    <x:String>3rd</x:String>
+                    <x:String>4th</x:String>
+                    <x:String>5th</x:String>
+                </views:UndoablePicker.Items>
+            </views:UndoablePicker>
 
-        <Button
-            Text="リセット"
-            Clicked="OnResetClicked" />
+            <Button
+                Text="リセット"
+                Clicked="OnResetClicked" />
 
-        <Button
-            Text="確認"
-            x:Name="ConfirmButton" />
-    </StackLayout>
+            <Button
+                Text="確認"
+                x:Name="ConfirmButton" />
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
