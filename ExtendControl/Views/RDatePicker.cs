@@ -8,7 +8,8 @@ namespace ExtendControl.Views
 {
     /// <summary>
     /// 日付範囲選択ピッカー<br/>
-    /// 選択可能は日付範囲および初期選択日はConfigプロパティで指定する（この場合、変更確認イベントは発声しない）
+    /// 選択可能日付範囲および初期選択日はConfigプロパティで指定する。<br/>
+    /// Configプロパティによる選択肢変更では変更確認イベントは発生しない。
     /// </summary>
     public class RDatePicker : UndoablePicker
     {
@@ -83,7 +84,7 @@ namespace ExtendControl.Views
             TraceUtility.Trace();
 
             // 現在の選択項目を退避。
-            DateTime selected = (DateTime)SelectedItem;
+            object selected = SelectedItem;
 
             // スピナー選択肢をクリアする。
             if (ItemsSource != null) ItemsSource.Clear();
