@@ -33,6 +33,11 @@ namespace ExtendControl.Views
             MyDatePicker.BeforeChageTask = CreateCofirmingTask;
             MyUndoablePicker.BeforeChageTask = CreateCofirmingTask;
 
+            MyRDatePicker.BeforeChageTask = () =>
+            {
+                return DisplayAlert("RDatePicker", "変更していい？", "いいよ", "だめ");
+            };
+
             // 選択確定イベント。
             MyUndoablePicker.FixedSelectionEvent +=  (s, e) =>
             {

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using ExtendControl.Models;
+using Prism.Navigation;
 using Prism.Services;
-using Prism.Services.Dialogs;
 using Reactive.Bindings;
 
 namespace ExtendControl.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel : INavigationAware, IDestructible
     {
         private IPageDialogService _dialogService;
 
@@ -36,12 +36,22 @@ namespace ExtendControl.ViewModels
         /// </summary>
         public ReactiveProperty<DateListPickerItem> SelectedDate { get; set; } = new ReactiveProperty<DateListPickerItem>();
 
+        public ReactiveProperty<double> PastDays { get; } = new ReactiveProperty<double>();
+        public ReactiveProperty<double> FutureDays { get; } = new ReactiveProperty<double>();
+
+        public ReactiveProperty<SelectableDateRange> RDatePickerDateAtt { get; } = new ReactiveProperty<SelectableDateRange>();
+        public ReactiveProperty<DateTime> RDatePickerDateSelectedItem { get; } = new ReactiveProperty<DateTime>();
+
+        public ReactiveProperty<DateTime> InitialDate { get; } = new ReactiveProperty<DateTime>();
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="dialogService"></param>
         public MainPageViewModel(IPageDialogService dialogService)
         {
+            TraceUtility.Trace();
+
             _dialogService = dialogService;
 
             // 日付範囲を更新する。
@@ -55,15 +65,7 @@ namespace ExtendControl.ViewModels
             // 適用ボタンコマンドの処理。
             ApplyCｍd.Subscribe(_ =>
             {
-                Debug.WriteLine("適用ボタンタップ");
-
-                // 日付範囲を更新する。
-                DateRangeProp.Value = new DateRange
-                {
-                    StandardDate = DateTime.Now.Date,
-                    PastDays = 2,
-                    FutureDays = 4,
-                };
+                OnApplyCmd();
             });
 
             // 今日ボタンコマンドの処理。
@@ -91,9 +93,51 @@ namespace ExtendControl.ViewModels
             });
         }
 
+        private void OnApplyCmd()
+        {
+            Debug.WriteLine("適用ボタンタップ");
+
+            DateTime std = DateTime.Now.Date;
+            uint past = (uint)PastDays.Value;
+            uint future = (uint)FutureDays.Value;
+
+            // 日付範囲を更新する。
+            DateRangeProp.Value = new DateRange
+            {
+                StandardDate = std,
+                PastDays = past,
+                FutureDays = future,
+            };
+
+            // RDatePickerの候補、選択肢を更新する。
+            RDatePickerDateAtt.Value = new SelectableDateRange(std, past, future, InitialDate.Value);
+        }
+
+        
         public void OnItemSelected(object selectItem)
         {
             _dialogService.DisplayAlertAsync("選択", "選択されました" + Environment.NewLine + selectItem.ToString(), "OK");
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            TraceUtility.Trace();
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+            TraceUtility.Trace();
+
+            InitialDate.Value = DateTime.Now;
+
+            //Debug.WriteLine($"{this.GetType().FullName}.{MethodBase.GetCurrentMethod().Name}()");
+            RDatePickerDateAtt.Value = new SelectableDateRange();
+            //RDatePickerDateSelectedItem.Value = DateTime.Now.Date;
+        }
+
+        public void Destroy()
+        {
+            TraceUtility.Trace();
         }
     }
 }

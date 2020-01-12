@@ -12,18 +12,51 @@
     <StackLayout
         Spacing="10">
 
-        <Label
-            Text="選択可能過去日付：" />
-        <Entry
-            Keyboard="Numeric"
-            x:Name="PastDays" />
+        <!-- 選択可能過去日付 -->
+        <StackLayout
+            Orientation="Horizontal">
 
-        <Label
-            Text="選択可能未来日付：" />
-        <Entry
-            Keyboard="Numeric"
-            x:Name="FutureDays" />
+            <Label
+                Text="{Binding Source={x:Reference StepperPast}
+                        , Path=Value
+                        , StringFormat='選択可能過去日数：{0}'}"
+                VerticalOptions="Center" />
+            <Stepper
+                x:Name="StepperPast"
+                Value="{Binding PastDays.Value}"
+                Increment="1" />
+        </StackLayout>
 
+        <!-- 選択可能過去日付 -->
+        <StackLayout
+            Orientation="Horizontal">
+
+            <Label
+                Text="{Binding Source={x:Reference StepperFuture}
+                        , Path=Value
+                        , StringFormat='選択可能未来日数：{0}'}"
+                VerticalOptions="Center" />
+            <Stepper
+                x:Name="StepperFuture"
+                Value="{Binding FutureDays.Value}"
+                Increment="1" />
+        </StackLayout>
+
+        <!-- 初期選択日付 -->
+        <StackLayout
+            Orientation="Horizontal">
+
+            <Label
+                Text="初期値"
+                VerticalOptions="Center"/>
+            <DatePicker
+                Format="yyyy/MM/dd"
+                Date="{Binding InitialDate.Value}"
+                ios:Picker.UpdateMode="WhenFinished"/>
+
+        </StackLayout>
+
+        <!-- ボタン -->
         <Button
             Text="適用"
             Command="{Binding ApplyCｍd}" />
@@ -34,7 +67,7 @@
 
         <Button
             Text="今日(強制)"
-            Clicked="OnTodayClicked"/>
+            Clicked="OnTodayClicked" />
 
         <!-- 拡張した日付選択ピッカー -->
         <views:DateListPicker
@@ -42,6 +75,32 @@
             ios:Picker.UpdateMode="WhenFinished"
             DateRange="{Binding DateRangeProp.Value}"
             SelectedItem="{Binding SelectedDate.Value}" />
+
+        <!-- RDatePicker -->
+        <Frame
+            HasShadow="False"
+            BorderColor="Gray"
+            Margin="5">
+            <StackLayout>
+
+                <views:RDatePicker
+                    x:Name="MyRDatePicker"
+                    ios:Picker.UpdateMode="WhenFinished"
+                    DateAttribute="{Binding RDatePickerDateAtt.Value}"
+                    SelectedItem="{Binding RDatePickerDateSelectedItem.Value}"
+                    ItemDisplayBinding="{Binding ., StringFormat='{0:M/d}'}" />
+                <Label
+                    Text="{Binding Source={x:Reference MyRDatePicker}
+                    , Path=SelectedItem
+                    , StringFormat='SelectedItem={0:yyyy/M/d H:mm:ss}'
+                    , FallbackValue='error!'}" />
+                <Label
+                    Text="{Binding Source={x:Reference MyRDatePicker}
+                    , Path=SelectedIndex
+                    , StringFormat='SelectedIndex={0}'
+                    , FallbackValue='error!'}" />
+            </StackLayout>
+        </Frame>
 
         <Button
             Text="選択日付の表示"
@@ -61,7 +120,7 @@
 
         <Button
             Text="リセット"
-            Clicked="OnResetClicked"/>
+            Clicked="OnResetClicked" />
 
         <Button
             Text="確認"

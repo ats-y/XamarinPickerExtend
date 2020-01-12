@@ -72,9 +72,15 @@ namespace ExtendControl.Views
             if (range == null) return;
 
             DateListPicker myself = bindable as DateListPicker;
+
+            var changeTask = myself.BeforeChageTask;
+            myself.BeforeChageTask = null;
+
             if (myself == null) return;
 
             myself.SetDateList(range);
+
+            myself.BeforeChageTask = changeTask;
         }
 
         /// <summary>
