@@ -14,7 +14,7 @@ UndoablePickerを継承しているので選択肢の変更確認および変更
 
 ## Screenshot
 
-![スクリーンショット](image/screenshot01.png)
+![スクリーンショット](image/001.png)
 
 ## UndoablePickerの使い方
 
